@@ -154,10 +154,18 @@ const getUserByCookie = async (req: Request, res: Response) => {
   }
 };
 
+const logout = (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 export default {
   getAllUser,
   signup,
   signupAdmin,
   login,
   getUserByCookie,
+  logout,
 };

@@ -167,10 +167,17 @@ const getUserByCookie = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(500).json({ message: "Server error" });
     }
 });
+const logout = (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+};
 exports.default = {
     getAllUser,
     signup,
     signupAdmin,
     login,
     getUserByCookie,
+    logout,
 };

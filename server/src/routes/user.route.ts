@@ -9,5 +9,6 @@ userRouter.post("/signup/customer", userController.signup);
 userRouter.post("/signup/admin", userController.signupAdmin);
 userRouter.post("/login", userController.login);
 userRouter.get("/userinfo", authCheck, userController.getUserByCookie);
+userRouter.post("/logout", userController.logout);
 
 export default userRouter;

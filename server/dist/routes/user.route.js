@@ -12,4 +12,5 @@ userRouter.post("/signup/customer", user_controller_1.default.signup);
 userRouter.post("/signup/admin", user_controller_1.default.signupAdmin);
 userRouter.post("/login", user_controller_1.default.login);
 userRouter.get("/userinfo", auth_middleware_1.authCheck, user_controller_1.default.getUserByCookie);
+userRouter.post("/logout", user_controller_1.default.logout);
 exports.default = userRouter;
