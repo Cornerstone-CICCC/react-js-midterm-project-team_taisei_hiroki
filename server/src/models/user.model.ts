@@ -20,8 +20,9 @@ const fetchUser = async (id: number) => {
 const add = async (data: CreateUserBody) => {
   const { email, password } = data;
 
-  const users = await fetchAll();
-  const isExistUser = users.some((user) => user.email === email);
+  const isExistUser = await prisma.user.findUnique({
+    where: { email },
+  });
   if (isExistUser) {
     return null;
   }
@@ -40,8 +41,9 @@ const add = async (data: CreateUserBody) => {
 const addAdmin = async (data: CreateUserBody) => {
   const { email, password } = data;
 
-  const users = await fetchAll();
-  const isExistUser = users.some((user) => user.email === email);
+  const isExistUser = await prisma.user.findUnique({
+    where: { email },
+  });
   if (isExistUser) {
     return null;
   }
@@ -59,8 +61,9 @@ const addAdmin = async (data: CreateUserBody) => {
 // For login
 const authCheck = async (data: LoginUserBody) => {
   const { email, password } = data;
-  const users = await fetchAll();
-  const loginUser = users.find((user) => user.email === email);
+  const loginUser = await prisma.user.findUnique({
+    where: { email },
+  });
   if (!loginUser) {
     return null;
   }

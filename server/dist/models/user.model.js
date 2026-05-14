@@ -29,8 +29,9 @@ const fetchUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
 // For signup
 const add = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = data;
-    const users = yield fetchAll();
-    const isExistUser = users.some((user) => user.email === email);
+    const isExistUser = yield prisma_1.prisma.user.findUnique({
+        where: { email },
+    });
     if (isExistUser) {
         return null;
     }
@@ -42,8 +43,9 @@ const add = (data) => __awaiter(void 0, void 0, void 0, function* () {
 // For admin signup
 const addAdmin = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = data;
-    const users = yield fetchAll();
-    const isExistUser = users.some((user) => user.email === email);
+    const isExistUser = yield prisma_1.prisma.user.findUnique({
+        where: { email },
+    });
     if (isExistUser) {
         return null;
     }
@@ -55,8 +57,9 @@ const addAdmin = (data) => __awaiter(void 0, void 0, void 0, function* () {
 // For login
 const authCheck = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = data;
-    const users = yield fetchAll();
-    const loginUser = users.find((user) => user.email === email);
+    const loginUser = yield prisma_1.prisma.user.findUnique({
+        where: { email },
+    });
     if (!loginUser) {
         return null;
     }
