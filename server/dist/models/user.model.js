@@ -17,6 +17,15 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const fetchAll = () => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.prisma.user.findMany();
 });
+const fetchUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield prisma_1.prisma.user.findUnique({
+        where: { id },
+    });
+    if (!user) {
+        return null;
+    }
+    return user;
+});
 // For signup
 const add = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = data;
@@ -59,6 +68,7 @@ const authCheck = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.default = {
     fetchAll,
+    fetchUser,
     add,
     addAdmin,
     authCheck,

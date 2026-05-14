@@ -6,6 +6,16 @@ const fetchAll = async () => {
   return await prisma.user.findMany();
 };
 
+const fetchUser = async (id: number) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) {
+    return null;
+  }
+  return user;
+};
+
 // For signup
 const add = async (data: CreateUserBody) => {
   const { email, password } = data;
@@ -63,6 +73,7 @@ const authCheck = async (data: LoginUserBody) => {
 
 export default {
   fetchAll,
+  fetchUser,
   add,
   addAdmin,
   authCheck,

@@ -134,9 +134,30 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const getUserByCookie = async (req: Request, res: Response) => {
+  try {
+    if (req.user?.userId) {
+      const { userId } = req.user;
+      const user: User | null = await userModel.fetchUser(userId);
+      if (!user) {
+        res.status(401).json({ message: "User is not authorized" });
+        return;
+      }
+      const { password: _password, email: _email, ...publicUser } = user;
+      res.status(200).json(publicUser);
+    } else {
+      res.status(401).json({ message: "User is not authorized" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export default {
   getAllUser,
   signup,
   signupAdmin,
   login,
+  getUserByCookie,
 };

@@ -145,9 +145,32 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({ message: "server error" });
     }
 });
+const getUserByCookie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.userId) {
+            const { userId } = req.user;
+            const user = yield user_model_1.default.fetchUser(userId);
+            if (!user) {
+                res.status(401).json({ message: "User is not authorized" });
+                return;
+            }
+            const { password: _password, email: _email } = user, publicUser = __rest(user, ["password", "email"]);
+            res.status(200).json(publicUser);
+        }
+        else {
+            res.status(401).json({ message: "User is not authorized" });
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 exports.default = {
     getAllUser,
     signup,
     signupAdmin,
     login,
+    getUserByCookie,
 };
