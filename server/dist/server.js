@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
+const item_route_1 = __importDefault(require("./routes/item.route"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
@@ -18,6 +19,7 @@ app.use((0, cors_1.default)({
     credentials: true,
 }));
 app.use("/users", user_route_1.default);
+app.use("/items", item_route_1.default);
 app.use((req, res) => {
     res.status(404).send("Invalid Page");
 });
