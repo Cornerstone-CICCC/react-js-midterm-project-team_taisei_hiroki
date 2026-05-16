@@ -6,23 +6,6 @@ import { User } from "../generated/prisma/client";
 import jwt from "jsonwebtoken";
 import type { Secret, SignOptions } from "jsonwebtoken";
 
-// get all users
-const getAllUser = async (req: Request, res: Response) => {
-  try {
-    const users = await userModel.fetchAll();
-    const publicUsers = users.map((user) => {
-      return {
-        userName: user.userName,
-        role: user.role,
-      };
-    });
-    res.status(200).json(publicUsers);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "server error" });
-  }
-};
-
 // user signup for customer
 const signup = async (req: Request, res: Response) => {
   const parsed = createUserSchema.safeParse(req.body);
@@ -56,8 +39,8 @@ const signup = async (req: Request, res: Response) => {
   }
 };
 
-// user signup for admin
-const signupAdmin = async (req: Request, res: Response) => {
+// create admin (admin-only — guarded by authCheck + adminCheck at the route layer)
+const createAdmin = async (req: Request, res: Response) => {
   const parsed = createUserSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ message: parsed.error.issues });
@@ -70,19 +53,17 @@ const signupAdmin = async (req: Request, res: Response) => {
     res.status(400).json({ message: "Password is too weak" });
     return;
   }
-
   try {
-    const newUser: User | null = await userModel.addAdmin({
-      userName,
-      email,
-      password,
-    });
+    const newUser: User | null = await userModel.add(
+      { userName, email, password },
+      "admin",
+    );
     if (!newUser) {
       res.status(400).json({ message: "User already exists" });
       return;
     }
 
-    const { password: _password, ...publicUser } = newUser;
+    const { password: _password, email: _email, ...publicUser } = newUser;
     res.status(201).json(publicUser);
   } catch (error) {
     console.error(error);
@@ -162,9 +143,8 @@ const logout = (req: Request, res: Response) => {
 };
 
 export default {
-  getAllUser,
   signup,
-  signupAdmin,
+  createAdmin,
   login,
   getUserByCookie,
   logout,

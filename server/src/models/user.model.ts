@@ -1,10 +1,7 @@
 import { prisma } from "../lib/prisma";
 import bcrypt from "bcrypt";
 import { CreateUserBody, LoginUserBody } from "../schemas/user.schema";
-
-const fetchAll = async () => {
-  return await prisma.user.findMany();
-};
+import { Role } from "../generated/prisma/client";
 
 const fetchUser = async (id: number) => {
   const user = await prisma.user.findUnique({
@@ -16,8 +13,8 @@ const fetchUser = async (id: number) => {
   return user;
 };
 
-// For signup
-const add = async (data: CreateUserBody) => {
+// For signup (defaults to customer; admin requires authenticated admin caller)
+const add = async (data: CreateUserBody, role: Role = "customer") => {
   const { email, password } = data;
 
   const isExistUser = await prisma.user.findUnique({
@@ -32,28 +29,7 @@ const add = async (data: CreateUserBody) => {
     data: {
       ...data,
       password: hashedPassword,
-      role: "customer",
-    },
-  });
-};
-
-// For admin signup
-const addAdmin = async (data: CreateUserBody) => {
-  const { email, password } = data;
-
-  const isExistUser = await prisma.user.findUnique({
-    where: { email },
-  });
-  if (isExistUser) {
-    return null;
-  }
-  const hashedPassword = await bcrypt.hash(password, 12);
-
-  return await prisma.user.create({
-    data: {
-      ...data,
-      password: hashedPassword,
-      role: "admin",
+      role,
     },
   });
 };
@@ -75,9 +51,7 @@ const authCheck = async (data: LoginUserBody) => {
 };
 
 export default {
-  fetchAll,
   fetchUser,
   add,
-  addAdmin,
   authCheck,
 };

@@ -5,19 +5,22 @@ const seedItemsData = [
     title: "Mechanical Keyboard",
     description: "Compact keyboard with tactile switches",
     price: 129,
-    image: "https://example.com/images/keyboard.jpg",
+    image:
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Wireless Mouse",
     description: "Lightweight mouse with rechargeable battery",
     price: 79,
-    image: "https://example.com/images/mouse.jpg",
+    image:
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "USB-C Hub",
     description: "Multi-port hub for laptop setup",
     price: 49,
-    image: "https://example.com/images/hub.jpg",
+    image:
+      "https://images.unsplash.com/photo-1625948515291-69613efd103f?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
